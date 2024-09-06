@@ -2,25 +2,29 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/myapp   # Destination folder where your application files will be copied
+    destination: /home/ec2-user/myapp   # Destination folder where your extracted files will be placed
 
 hooks:
   BeforeInstall:
-    - location: scripts/install_dependencies.sh   # Script to install dependencies (e.g., Java, web server)
+    - location: scripts/install_dependencies.sh   # Install dependencies (e.g., Java, web server)
+      timeout: 300
+      runas: ec2-user
+
+    - location: scripts/extract_zip.sh            # Script to unzip the app package
       timeout: 300
       runas: ec2-user
 
   AfterInstall:
-    - location: scripts/after_install.sh          # Script to configure the environment (e.g., move config files)
+    - location: scripts/configure_app.sh          # Custom configuration after extraction
       timeout: 300
       runas: ec2-user
 
   ApplicationStart:
-    - location: scripts/start_server.sh           # Script to start the web server or application
+    - location: scripts/start_server.sh           # Start your Java app or web server
       timeout: 300
       runas: ec2-user
 
   ValidateService:
-    - location: scripts/validate_service.sh       # Script to verify that the service is up and running
+    - location: scripts/validate_service.sh       # Validate that the app is running correctly
       timeout: 300
       runas: ec2-user
