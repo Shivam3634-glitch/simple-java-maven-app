@@ -1,0 +1,26 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/myapp   # Destination folder where your application files will be copied
+
+hooks:
+  BeforeInstall:
+    - location: scripts/install_dependencies.sh   # Script to install dependencies (e.g., Java, web server)
+      timeout: 300
+      runas: ec2-user
+
+  AfterInstall:
+    - location: scripts/after_install.sh          # Script to configure the environment (e.g., move config files)
+      timeout: 300
+      runas: ec2-user
+
+  ApplicationStart:
+    - location: scripts/start_server.sh           # Script to start the web server or application
+      timeout: 300
+      runas: ec2-user
+
+  ValidateService:
+    - location: scripts/validate_service.sh       # Script to verify that the service is up and running
+      timeout: 300
+      runas: ec2-user
