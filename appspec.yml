@@ -5,12 +5,18 @@ files:
     destination: /home/ec2-user/simple-java-maven-app
 
 hooks:
+
+  Install:
+    - location: "ls"
+      timeout: 300
+      runas: ec2-user
+  
   ApplicationStart:
     - location: "java -jar /home/ec2-user/my-app-1.0-SNAPSHOT.jar --server.port=8081"
       timeout: 300
-      runas: root
+      runas: ec2-user
 
   ValidateService:
     - location: "curl localhost:8081"
       timeout: 300
-      runas: root
+      runas: ec2-user
