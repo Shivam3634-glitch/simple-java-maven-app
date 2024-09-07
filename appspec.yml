@@ -7,7 +7,7 @@ files:
 hooks:
 
   ApplicationStart:
-    - location: "java -jar /home/ec2-user/my-app-1.0-SNAPSHOT.jar --server.port=8081"
+    - location: scripts/app-server.sh
       timeout: 300
       runas: ec2-user
 
