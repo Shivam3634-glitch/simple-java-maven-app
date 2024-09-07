@@ -1,30 +1,27 @@
 version: 0.0
 os: linux
 files:
-  - source: /
-    destination: /home/ec2-user/myapp   # Destination folder where your extracted files will be placed
+  - source: target/*.jar
+    destination: /home/ec2-user/simple-java-maven-app
 
 hooks:
+  ApplicationStop:
+    - location: scripts/stop_server.sh
+      timeout: 300
+      runas: ec2-user
   BeforeInstall:
-    - location: scripts/install_dependencies.sh   # Install dependencies (e.g., Java, web server)
+    - location: scripts/install_dependencies.sh
       timeout: 300
       runas: ec2-user
-
-    - location: scripts/extract_zip.sh            # Script to unzip the app package
-      timeout: 300
-      runas: ec2-user
-
   AfterInstall:
-    - location: scripts/configure_app.sh          # Custom configuration after extraction
+    - location: scripts/start_server.sh
       timeout: 300
       runas: ec2-user
-
   ApplicationStart:
-    - location: scripts/start_server.sh           # Start your Java app or web server
+    - location: scripts/application_start.sh
       timeout: 300
       runas: ec2-user
-
   ValidateService:
-    - location: scripts/validate_service.sh       # Validate that the app is running correctly
+    - location: scripts/validate.sh
       timeout: 300
       runas: ec2-user
