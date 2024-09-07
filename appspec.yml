@@ -12,6 +12,6 @@ hooks:
       runas: ec2-user
 
   ValidateService:
-    - location: "curl localhost:8081"
+    - location: scripts/validate.sh
       timeout: 300
       runas: ec2-user
